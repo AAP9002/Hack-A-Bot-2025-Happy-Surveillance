@@ -3,12 +3,15 @@ from modlib.apps import Annotator
 from modlib.models.zoo import SSDMobileNetV2FPNLite320x320
 
 import cv2
+from sentry.Sentry import Sentry
 
 device = AiCamera()
 model = SSDMobileNetV2FPNLite320x320()
 device.deploy(model)
 
 annotator = Annotator(thickness=1, text_thickness=1, text_scale=0.4)
+
+sentry = Sentry()
 
 with device as stream:
     for frame in stream:
@@ -17,15 +20,8 @@ with device as stream:
         
         annotator.annotate_boxes(frame, detections, labels=labels)
         
-        custom_text = "Custom Text"
-        
-        # Draw the text on the image (frame.image) using OpenCV's putText method
-        cv2.putText(frame.image, 
-                    custom_text, 
-                    (50, 50),  # Position where the text will be drawn
-                    cv2.FONT_HERSHEY_SIMPLEX,  # Font type
-                    1,  # Font size
-                    (255, 0, 0),  # Text color in BGR (red in this case)
-                    2)  # Thickness of the text
+        frame_matrix = frame.image
+
+        sentry.process_frame(frame_matrix)
         
         frame.display()
