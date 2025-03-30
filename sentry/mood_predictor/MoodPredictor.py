@@ -29,7 +29,7 @@ class MoodPredictor:
 
     def __init__(self):
         # Setup the tensorflow model
-        self.model = tf.keras.models.load_model("mood_predictor/moodPredictionModel.h5", compile=False)
+        self.model = tf.keras.models.load_model("sentry/mood_predictor/moodPredictionModel.h5", compile=False)
     
     """
     Loads the saved model weights into the model architecture.
@@ -58,7 +58,7 @@ class MoodPredictor:
         ])
 
         model.load_weights("model.h5")
-        model.save("mood_predictor/moodPredictionModel.h5")
+        model.save("sentry/mood_predictor/moodPredictionModel.h5")
 
 
     """
