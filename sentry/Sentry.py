@@ -3,6 +3,7 @@ import cv2
 from gpiozero import Servo
 from time import sleep
 from .mood_predictor.MoodPredictor import Mood, MoodPredictor
+from .image_uploader.ImageUploader import ImageUploader
 
 class Sentry():
     def __init__(self):
@@ -40,6 +41,7 @@ class Sentry():
         # This method should be overridden in subclasses
         # Assuming the frame is a numpy array (image)
         mood = self.moodPredictor.predict(face_image)
+        self.add_image_record(face_image, mood.name)
         return mood
     
     def fire_shin_attack(self):
@@ -47,6 +49,13 @@ class Sentry():
         sleep(1)
         self.servo.max()
         sleep(1)
+
+    def add_image_record(self, image, emotion):
+        """Add an image record to the database."""
+        # Assuming the image is a numpy array (image)
+        image_uploader = ImageUploader()
+        image_uploader.add_image_record(image, emotion)
+        print("Image record added to the database.")
 
 
    

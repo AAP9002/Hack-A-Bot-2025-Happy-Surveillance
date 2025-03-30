@@ -48,12 +48,15 @@ def get_face_square_bbox(pose, keypoint_scores, width, height, threshold=0.3, pa
 
     return x1, y1, x2, y2
 
+last_image_recorded_time = 0
+
 with device as stream:
     for frame in stream:
         poses = frame.detections
         frame_matrix = frame.image
         height, width, _ = frame_matrix.shape
 
+        last_image_recorded_time += 1
 
         for i in range(poses.n_detections):
             if poses.confidence[i] < 0.3:
@@ -61,18 +64,23 @@ with device as stream:
 
             face_bbox = get_face_square_bbox(poses.keypoints[i], poses.keypoint_scores[i], width, height)
             if face_bbox:
-                x1, y1, x2, y2 = face_bbox
-                square_face_crop = frame_matrix[y1:y2, x1:x2]
+                if last_image_recorded_time < 30:
+                    pass
+                else:
+                    last_image_recorded_time = 0
 
-                # Show the square cropped face
-                cv2.imshow(f"Square Face {i}", square_face_crop)
+                    x1, y1, x2, y2 = face_bbox
+                    square_face_crop = frame_matrix[y1:y2, x1:x2]
 
-                # Predict mood
-                mood = sentry.classify_mood(square_face_crop)
-                print(f"Mood for face {i}: {mood}")
+                    # Show the square cropped face
+                    cv2.imshow(f"Square Face {i}", square_face_crop)
 
-                if mood == sentry.moodEnum.SAD:
-                    sentry.fire_shin_attack()
+                    # Predict mood
+                    mood = sentry.classify_mood(square_face_crop)
+                    print(f"Mood for face {i}: {mood}")
+
+                    if mood == sentry.moodEnum.SAD:
+                        sentry.fire_shin_attack()
 
         annotator.annotate_poses(frame, poses)
 
