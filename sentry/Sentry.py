@@ -4,6 +4,7 @@ from gpiozero import Servo
 from time import sleep
 from .mood_predictor.MoodPredictor import Mood, MoodPredictor
 from .image_uploader.ImageUploader import ImageUploader
+from .face_recognition.FaceRecogniser import FaceRecogniser
 
 class Sentry():
     def __init__(self):
@@ -57,5 +58,11 @@ class Sentry():
         image_uploader.add_image_record(image, emotion)
         print("Image record added to the database.")
 
+    def check_face_recognition(self, face_image):
+        # This method should be overridden in subclasses
+        face_recogniser = FaceRecogniser()
+        status = face_recogniser.validate(face_image)
+        print(f"Face recognition status: {status}")
+        return status
 
    
