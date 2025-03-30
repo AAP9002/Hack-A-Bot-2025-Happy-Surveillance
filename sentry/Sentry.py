@@ -1,6 +1,6 @@
 from numpy import add
 import cv2
-from .MoodPredictor import Mood, MoodPredictor
+from .mood_predictor.MoodPredictor import Mood, MoodPredictor
 
 class Sentry():
     def __init__(self):
