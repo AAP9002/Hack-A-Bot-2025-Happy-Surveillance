@@ -18,6 +18,9 @@ class Sentry():
         self.servo = Servo(18, min_pulse_width=min_pulse, max_pulse_width=max_pulse)
         self.servo.min()
 
+        self.face_recogniser = FaceRecogniser()
+
+
     def add_system_name(self, frame, name):
         """add the device name in the top left corner with an active status
 
@@ -60,8 +63,7 @@ class Sentry():
 
     def check_face_recognition(self, face_image):
         # This method should be overridden in subclasses
-        face_recogniser = FaceRecogniser()
-        status = face_recogniser.validate(face_image)
+        status = self.face_recogniser.validate(face_image)
         print(f"Face recognition status: {status}")
         return status
 
