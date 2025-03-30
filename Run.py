@@ -67,6 +67,10 @@ with device as stream:
                 # Show the square cropped face
                 cv2.imshow(f"Square Face {i}", square_face_crop)
 
+                # Predict mood
+                mood = sentry.classify_mood(square_face_crop)
+                print(f"Mood for face {i}: {mood}")
+
         annotator.annotate_poses(frame, poses)
 
         frame.display()

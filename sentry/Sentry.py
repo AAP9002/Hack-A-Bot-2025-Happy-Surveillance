@@ -1,7 +1,11 @@
 from numpy import add
 import cv2
+from ..mood_predictor.MoodPredictor import Mood, MoodPredictor
 
 class Sentry():
+    def __init__(self):
+        self.moodPredictor = MoodPredictor()
+
     def add_system_name(self, frame, name):
         """add the device name in the top left corner with an active status
 
@@ -22,9 +26,11 @@ class Sentry():
         # This method should be overridden in subclasses
         self.add_system_name(frame, "Sentry System: Active")
     
-    def classify_mood(self, frame):
+    def classify_mood(self, face_image):
         # This method should be overridden in subclasses
-        raise NotImplementedError("Subclasses should implement this method.")
+        # Assuming the frame is a numpy array (image)
+        mood = self.moodPredictor.predict(face_image)
+        return mood
     
     def find_face(self, frame):
         # This method should be overridden in subclasses
