@@ -71,6 +71,9 @@ with device as stream:
                 mood = sentry.classify_mood(square_face_crop)
                 print(f"Mood for face {i}: {mood}")
 
+                if mood == sentry.moodEnum.SAD:
+                    sentry.fire_shin_attack()
+
         annotator.annotate_poses(frame, poses)
 
         frame.display()

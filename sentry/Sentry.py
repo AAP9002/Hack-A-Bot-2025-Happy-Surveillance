@@ -1,10 +1,19 @@
 from numpy import add
 import cv2
+from gpiozero import Servo
+from time import sleep
 from .mood_predictor.MoodPredictor import Mood, MoodPredictor
 
 class Sentry():
     def __init__(self):
         self.moodPredictor = MoodPredictor()
+        self.moodEnum = Mood
+        # Define pulse widths based on your servo's specifications
+        min_pulse = 1 / 1000  # 1ms pulse width
+        max_pulse = 2 / 1000  # 2ms pulse width
+
+        # Initialize the servo with custom pulse widths
+        self.servo = Servo(18, min_pulse_width=min_pulse, max_pulse_width=max_pulse)
 
     def add_system_name(self, frame, name):
         """add the device name in the top left corner with an active status
@@ -32,14 +41,11 @@ class Sentry():
         mood = self.moodPredictor.predict(face_image)
         return mood
     
-    def find_face(self, frame):
-        # This method should be overridden in subclasses
-        raise NotImplementedError("Subclasses should implement this method.")
-    
-    def add_text(self, frame, text):
-        # This method should be overridden in subclasses
-        raise NotImplementedError("Subclasses should implement this method.")
-    
-    def notify_system(self, message):
-        # This method should be overridden in subclasses
-        raise NotImplementedError("Subclasses should implement this method.")
+    def fire_shin_attack(self):
+        self.servo.min()
+        sleep(1)
+        self.servo.max()
+        sleep(1)
+
+
+   
