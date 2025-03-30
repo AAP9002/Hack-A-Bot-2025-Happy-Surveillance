@@ -62,6 +62,7 @@ class Sentry():
         print("Image record added to the database.")
 
     def check_face_recognition(self, face_image):
+        print("Checking face recognition...")
         # This method should be overridden in subclasses
         status = self.face_recogniser.validate(face_image)
         print(f"Face recognition status: {status}")
