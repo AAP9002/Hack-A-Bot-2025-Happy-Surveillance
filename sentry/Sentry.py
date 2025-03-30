@@ -14,6 +14,7 @@ class Sentry():
 
         # Initialize the servo with custom pulse widths
         self.servo = Servo(18, min_pulse_width=min_pulse, max_pulse_width=max_pulse)
+        self.servo.min()
 
     def add_system_name(self, frame, name):
         """add the device name in the top left corner with an active status
